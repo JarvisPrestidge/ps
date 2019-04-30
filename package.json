@@ -1,0 +1,53 @@
+{
+    "name": "ps",
+    "version": "1.0.0",
+    "description": "Get running processes",
+    "license": "MIT",
+    "main": "lib/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/jarvisprestidge/ps.git"
+    },
+    "bugs": {
+        "url": "https://github.com/jarvisprestidge/ps/issues"
+    },
+    "author": {
+        "name": "Jarvis Prestidge",
+        "email": "jarvisprestidge@gmail.com",
+        "url": "https://jarvisprestidge.com"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/jarvisprestidge/ps/blob/master/LICENSE"
+        }
+    ],
+    "keywords": [
+        "ps",
+        "proc",
+        "process",
+        "processes",
+        "unix",
+        "list",
+        "running"
+    ],
+    "engines": {
+        "node": ">=8"
+    },
+    "scripts": {
+        "tsc": "tsc -p .",
+        "clean": "rm -rf lib",
+        "start": "node lib/index.js",
+        "docs": "docsify serve docs",
+        "build": "npm run clean && tsc -p .",
+        "prepublishOnly": "npm run build"
+    },
+    "devDependencies": {
+        "@types/node": "^11.13.8",
+        "prettier": "^1.15.3",
+        "tslint": "^5.12.0",
+        "tslint-config-prettier": "^1.17.0",
+        "tslint-plugin-prettier": "^2.0.1",
+        "typescript": "^3.2.2"
+    }
+}
