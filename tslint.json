@@ -7,11 +7,13 @@
     "rules": {
         "forin": false,
         "no-console": false,
-        "no-empty-interface": false,
+        "array-type": false,
         "interface-name": false,
         "no-var-requires": false,
         "member-ordering": false,
         "ordered-imports": false,
-        "object-literal-sort-keys": false
+        "no-empty-interface": false,
+        "object-literal-sort-keys": false,
+        "prefer-const": [true, { "destructuring": "all" }]
     }
 }

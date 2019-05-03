@@ -77,9 +77,19 @@ ctx.sse.send(data)
 ctx.sse.end()
 ```
 
-## Examples
+## Benchmarks
 
-TBC
+```ts
+$ ts-node benchmarks/bench.ts
+
+Implementation: jarvisprestidge/ps
+Execution time: 0s 25.855733ms
+==================================
+Implementation: sindresorhus/ps-list
+Execution time: 0s 36.46047ms
+Done in 0.96s.
+```
+
 
 ## Support
 

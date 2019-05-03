@@ -1,26 +1,44 @@
 import { exec } from "child_process";
-import { FormatSpecifierCode, IPsProcess, FormatSpecifierHeader } from "./interfaces/IPsProcess";
+import { FormatSpecifierCode, PsProcess } from "./interfaces/IPsProcess";
 import { promisify } from "util";
+import { PsOptions } from "./interfaces/IPsOptions";
 
 const execAsync = promisify(exec);
 
 /**
- * Fetches running process list information
+ * Fetch running process list info
  *
- * @param {...FormatSpecifierCode[]} formatSpecifiersCodes
- * @returns {Promise<IProcess[]>}
+ * @template T
+ * @param {PsOptions} [options]
+ * @param {...T[]} args
+ * @returns {Promise<PsProcess<T>[]>}
  */
-export const ps = async (...formatSpecifiersCodes: FormatSpecifierCode[]): Promise<IPsProcess[]> => {
+export const ps = async <T extends FormatSpecifierCode>(options?: PsOptions, ...args: T[]): Promise<PsProcess<T>[]> => {
 
     const TEN_MEGABYTES = 1000 * 1000 * 10;
 
     const PS_COMMAND = "ps";
-    const PS_FLAGS = "-wwxeo";
-    const COLUMN_SEPARATOR = " -o '|%n|' -o ";
+    const PS_SEPARATOR = " -o '|%n|' -o ";
 
-    const formatArgs = formatSpecifiersCodes.join(COLUMN_SEPARATOR);
+    let selectionFlag;
 
-    const command = `${PS_COMMAND} ${PS_FLAGS} ${formatArgs}`;
+    if (options && options.selection) {
+        const selection = options.selection;
+        switch (selection) {
+            case "tty": selectionFlag = ""; break;
+            case "user": selectionFlag = "x"; break;
+            case "all": selectionFlag = "a"; break;
+            case "running": selectionFlag = "r"; break;
+            default: selectionFlag = "a"; break;
+        }
+    }
+
+    args.push(args.splice(args.indexOf("cmd" as T), 1)[0]);
+
+    const flags = `-ww${selectionFlag}o`;
+    const formatArgs = args.join(PS_SEPARATOR);
+
+    const command = `${PS_COMMAND} ${flags} ${formatArgs}`;
 
     const { stdout, stderr } = await execAsync(command, { maxBuffer: TEN_MEGABYTES });
 
@@ -28,29 +46,21 @@ export const ps = async (...formatSpecifiersCodes: FormatSpecifierCode[]): Promi
         throw new Error(`executing ps command failed with the following: ${stderr}`);
     }
 
-    const lines = stdout
-        .trim()
-        .split("\n")
-        .map((l) => l.trim());
+    const lines = stdout.split("\n").slice(1);
 
-    const headerLine = lines.shift();
-    if (!headerLine) {
-        throw new Error("executing ps command failed for unknown reason");
-    }
-
-    const headers = headerLine.split(/\|.*?\|/).map((c) => c.trim());
-
-    const processList: IPsProcess[] = [];
+    const processList: PsProcess<T>[] = [];
 
     for (const line of lines) {
 
-        const values = line.split(/\|.*?\|/).map((c) => c.trim());
+        const metrics = line
+            .split(/\|\s*-?\d{1,2}\|/)
+            .map((m) => m.trim());
 
-        const process: IPsProcess = {};
+        const process: PsProcess<T> = {} as any;
 
-        for (const [index, value] of values.entries()) {
-            const processKey = headers[index];
-            process[processKey as FormatSpecifierHeader] = value;
+        for (const [index, value] of metrics.entries()) {
+            const code = args[index];
+            process[code as T] = value;
         }
 
         processList.push(process);

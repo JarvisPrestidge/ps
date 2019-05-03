@@ -1,24 +1,13 @@
 
 /**
- * Represents a single running process
+ * Type representing a single running process
  *
  * @export
- * @interface IPsProcess
+ * @type PsProcess
  */
-/**
- * Represents a single running process
- *
- * @export
- * @interface IPsProcess
- */
-export type IPsProcess = {
-    [index in FormatSpecifierHeader]?: any;
+export type PsProcess<C extends FormatSpecifierCode = FormatSpecifierCode> = {
+    [index in C]: string;
 };
-
-export interface IFormatSpecifier {
-    code: FormatSpecifierCode;
-    header: FormatSpecifierHeader;
-}
 
 export type FormatSpecifierCode =
     "%cpu" |
@@ -140,125 +129,3 @@ export type FormatSpecifierCode =
     "vsize" |
     "vsz" |
     "wchan";
-
-
-export type FormatSpecifierHeader =
-    "%CPU" |
-    "%MEM" |
-    "COMMAND" |
-    "BLOCKED" |
-    "START" |
-    "TIME" |
-    "C" |
-    "CAUGHT" |
-    "CGNAME" |
-    "CGROUP" |
-    "CLS" |
-    "CLS" |
-    "CMD" |
-    "COMMAND" |
-    "COMMAND" |
-    "CP" |
-    "TIME" |
-    "DRS" |
-    "EGID" |
-    "EGROUP" |
-    "EIP" |
-    "ESP" |
-    "ELAPSED" |
-    "ELAPSED" |
-    "EUID" |
-    "EUSER" |
-    "F" |
-    "FGID" |
-    "FGROUP" |
-    "F" |
-    "F" |
-    "COMMAND" |
-    "FUID" |
-    "FUSER" |
-    "GID" |
-    "GROUP" |
-    "IGNORED" |
-    "IPCNS" |
-    "LABEL" |
-    "STARTED" |
-    "SESSION" |
-    "LWP" |
-    "LXC" |
-    "MACHINE" |
-    "MAJFLT" |
-    "MINFLT" |
-    "MNTNS" |
-    "NETNS" |
-    "NI" |
-    "NI" |
-    "NLWP" |
-    "WCHAN" |
-    "OWNER" |
-    "%CPU" |
-    "PENDING" |
-    "PGRP" |
-    "PID" |
-    "PIDNS" |
-    "%MEM" |
-    "POL" |
-    "PPID" |
-    "PRI" |
-    "PSR" |
-    "RGID" |
-    "RGROUP" |
-    "RSS" |
-    "RSS" |
-    "RSZ" |
-    "RTPRIO" |
-    "RUID" |
-    "RUSER" |
-    "S" |
-    "SCH" |
-    "SEAT" |
-    "SESS" |
-    "P" |
-    "SGID" |
-    "SGROUP" |
-    "SID" |
-    "PENDING" |
-    "CAUGHT" |
-    "IGNORED" |
-    "BLOCKED" |
-    "SIZE" |
-    "SLICE" |
-    "SPID" |
-    "STACKP" |
-    "STARTED" |
-    "START" |
-    "STAT" |
-    "S" |
-    "SUID" |
-    "SUPGID" |
-    "SUPGRP" |
-    "SUSER" |
-    "SVGID" |
-    "SVUID" |
-    "SZ" |
-    "TGID" |
-    "THCNT" |
-    "TID" |
-    "TIME" |
-    "TTY" |
-    "TPGID" |
-    "TRS" |
-    "TT" |
-    "TT" |
-    "CMD" |
-    "COMMAND" |
-    "UID" |
-    "USER" |
-    "UNIT" |
-    "USER" |
-    "USERNS" |
-    "UTSNS" |
-    "UUNIT" |
-    "VSZ" |
-    "VSZ" |
-    "WCHAN";

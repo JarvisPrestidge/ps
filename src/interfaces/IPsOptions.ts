@@ -1,9 +1,11 @@
+export type PsOptionSelection = "tty" | "user" | "all" | "running";
+
 /**
  * Represents a single running process
  *
  * @export
  * @interface IPsOptions
  */
-export interface IPsOptions {
-    filter: RegExp | string;
+export interface PsOptions {
+    selection?: PsOptionSelection;
 }
